@@ -1,0 +1,8 @@
+Bugs:
+
+  5. Register icon with WM.  I am not motivated to fix this since FLWM
+       doesn't display icons like the more popular WMs.  Someone must
+       repeatedly nag me to fix it.
+  6. Help file (currently "nm.htm") is unlikely to be located if its not in 
+       the "pwd".  I don't have a clue how this can be done portably.
+  7. In cw.pyx, cw.set() doesn't check the value returned from set_cw().

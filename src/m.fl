@@ -1,0 +1,241 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0105 
+header_name {.h} 
+code_name {.cxx}
+decl {/*
+    Copyright 1998-2004 Ward Cunningham and Jim Wilson
+    Distributed under the GNU GPL V2 license
+    See http://c2.com/morse
+
+    This file is part of Morse.
+
+    Morse is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    Morse is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Morse; if not, write to the Free Software Foundation, Inc.,
+    59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/} {public
+} 
+
+decl {\#include "Bargraph.h"} {} 
+
+decl {\#include "Codebox.h"} {} 
+
+decl {\#include "Knob.h"} {public
+} 
+
+decl {\#include "Cw.h"} {} 
+
+decl {\#include <cstdlib>} {} 
+
+decl {\#include "Help.h"} {} 
+
+Function {adjust(Fl_Widget*, void*)} {private return_type void
+} {
+  code {set_cw(Speed->value(), Tone->value(), 1.0);} {}
+} 
+
+Function {full_screen(bool fs)} {private
+} {
+  code {static int X,Y,W,H;	// Shrunken Morse window size
+
+if (fs) {
+  X = Morse->x(); Y = Morse->y();
+  W = Morse->w(); H = Morse->h();
+  Morse->fullscreen();
+} else Morse->fullscreen_off(X,Y,W,H);} {}
+} 
+
+Function {} {open
+} {
+  Fl_Window About {
+    xywh {88 120 480 280} type Single box ENGRAVED_BOX hide modal noborder
+  } {
+    Fl_Return_Button {} {
+      label OK
+      callback {o->window()->hide();}
+      xywh {210 240 60 35} labelfont 1
+    }
+    Fl_Box {} {
+      image {pix/fltklogo.gif} xywh {20 131 110 89} box EMBOSSED_BOX align 64
+    }
+    Fl_Box {} {
+      label {(c) 1998-2004 Ward Cunningham and Jim Wilson}
+      xywh {0 60 480 25}
+    }
+    Fl_Box {} {
+      label {Distributed under the GNU GPL V2 license}
+      xywh {0 85 480 25}
+    }
+    Fl_Box {} {
+      label {See http://c2.com/morse}
+      xywh {0 110 480 25}
+    }
+    Fl_Box {} {
+      label {Built with the}
+      xywh {150 140 180 20}
+    }
+    Fl_Box {} {
+      label {http://www.fltk.org}
+      xywh {20 220 110 25}
+    }
+    Fl_Box {} {
+      label {A Fully Automatic Morse Code Teaching Machine}
+      xywh {0 10 480 25} labelfont 1
+    }
+    Fl_Box {} {
+      label {Originally described in QST, May 1977, ARRL, Newington, CT}
+      xywh {0 35 480 25}
+    }
+    Fl_Box {} {
+      image {pix/sdl_button.gif} xywh {335 146 128 64} box EMBOSSED_BOX align 64
+    }
+    Fl_Box {} {
+      label {Simple Directmedia Layer}
+      xywh {150 210 180 20}
+    }
+    Fl_Box {} {
+      label {http://www.libsdl.org}
+      xywh {335 215 128 25}
+    }
+    Fl_Box {} {
+      label {and the}
+      xywh {150 190 180 20}
+    }
+    Fl_Box {} {
+      label {Fast Light ToolKit}
+      xywh {150 160 180 20}
+    }
+  }
+  Fl_Window Help {
+    label Help
+    private xywh {527 20 530 385} type Double hide resizable
+  } {
+    Fl_Help_View View {
+      xywh {10 10 510 330} resizable
+      code0 {View->value(HelpString);}
+    }
+    Fl_Button smaller {
+      label F
+      callback {View->textsize(View->textsize()-2);
+if (View->textsize() <= 8)
+  smaller->deactivate();
+larger->activate();}
+      private tooltip {Make help text smaller.} xywh {105 350 30 25} labelfont 1 labelsize 10
+    }
+    Fl_Button larger {
+      label F
+      callback {View->textsize(View->textsize()+2);
+if (View->textsize() >= 18)
+  larger->deactivate();
+smaller->activate();}
+      tooltip {Make help text larger.} xywh {145 350 30 25} labelfont 1 labelsize 16
+    }
+    Fl_Button {} {
+      label Close
+      callback {Help->hide();}
+      private tooltip help xywh {330 350 95 25}
+    }
+  }
+  Fl_Window Morse {
+    callback {exit(0);} open
+    xywh {761 105 640 240} type Double resizable
+    code0 {o->size_range(o->w()>>1, o->h());} visible
+  } {
+    Fl_Roller Speed {
+      label Speed
+      callback adjust
+      tooltip {Words per minute} xywh {385 0 80 25} type Horizontal align 8 minimum 10 maximum 30 step 0.5 value 20
+      class Knob
+    }
+    Fl_Roller Tone {
+      label Tone
+      callback adjust
+      tooltip {Adjust tone frequency} xywh {520 0 80 25} type Horizontal align 8 minimum 440 maximum 2000 step 50 value 1000
+      class Knob
+    }
+    Fl_Group Lesson {
+      label {Q7ZG098O1JPW.LRAM6B/XD=YCKN23?FU45VHSITE} open
+      private tooltip {Click the white box, below, to start.} xywh {0 25 640 185} box UP_BOX align 5 resizable
+      code0 {o->disable("./=?");}
+      code1 {o->activate("Q7ZG");}
+      code3 {o->tesselate(2);}
+      class Bargraph
+    } {}
+    Fl_Input Teacher {
+      private tooltip {Click here to begin; press Enter to rest} xywh {0 210 640 30} when 1 textfont 1
+      class Codebox
+    }
+    Fl_Menu_Bar {} {open
+      private xywh {0 0 385 25}
+    } {
+      submenu {} {
+        label Morse selected
+        xywh {0 0 100 20}
+      } {
+        menuitem {} {
+          label {Full Screen}
+          callback {full_screen(o->mvalue()->value());}
+          xywh {0 0 100 20} type Toggle
+        }
+        menuitem {} {
+          label Numbers
+          callback {char* nrs = "0123456789";
+if (o->mvalue()->value())
+  Lesson->enable(nrs);
+else
+  Lesson->disable(nrs);
+Lesson->tesselate();
+Lesson->redraw();}
+          xywh {0 0 100 20} type Toggle value 1
+        }
+        menuitem {} {
+          label Symbols
+          callback {char* syms = "./=?";
+if (o->mvalue()->value())
+  Lesson->enable(syms);
+else
+  Lesson->disable(syms);
+Lesson->tesselate();
+Lesson->redraw();}
+          xywh {0 0 100 20} type Toggle
+        }
+        menuitem {} {
+          label Quit
+          callback {exit(0);}
+          xywh {0 0 100 20}
+        }
+      }
+      submenu {} {
+        label Help
+        xywh {6 0 100 20}
+      } {
+        menuitem {} {
+          label {Using Morse...}
+          callback {Help->show();}
+          xywh {0 0 100 20}
+        }
+        menuitem {} {
+          label {About Morse...}
+          callback {About->show();}
+          xywh {0 0 100 20}
+        }
+      }
+    }
+  }
+  code {w->show(argc, argv);
+while (1) {
+  int c = Lesson->select();	// Select random letter
+  bool pass = Teacher->teach(c);// Teach/test student
+  Lesson->grade(c , pass);	// Update scores
+  Lesson->graduate();		// Maybe add a letter
+}} {}
+} 
