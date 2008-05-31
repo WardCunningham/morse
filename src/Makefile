@@ -1,6 +1,7 @@
 # For some reason, xmake is required to make m.tgz.
 
-m.tgz: m.exe
+m.tgz: m m.exe
+	rm -f m.tgz
 	tar czvf m.tgz *
 
 # Use "xmake" to generate m.exe
@@ -29,16 +30,17 @@ m: m.fl Bargraph.cxx Bargraph.h Codebox.cxx Codebox.h Cw.cxx Cw.h \
 	g++ -c -Os `fltk-config --cxxflags` Codebox.cxx
 	g++ -c -Os `fltk-config --cxxflags` Knob.cxx
 	g++ -c -Os `sdl-config    --cflags` Cw.cxx
-	g++ -om m.o Bargraph.o Codebox.o Cw.o Knob.o \
-	  -static `fltk-config --ldstaticflags` \
-	  `sdl-config --static-libs`
+	g++ -static -om m.o Bargraph.o Codebox.o Cw.o Knob.o \
+	  `sdl-config --static-libs` \
+	  `fltk-config --ldstaticflags` -ldl
+	strip m
 	rm *.o m.cxx m.h
 
 # Besemer's Python extension version
 
 cw.so: cw.pyx Cw.cxx Cw.h
 	pyrexc cw.pyx
-	gcc -c -fPIC -I/usr/include/python2.2 cw.c
+	gcc -c -fPIC -I/usr/include/python2.3 cw.c
 	gcc -c -fPIC `sdl-config --cflags` Cw.cxx
 	g++ -shared cw.o Cw.o -static `sdl-config --static-libs` -ocw.so
 	rm cw.c *.o

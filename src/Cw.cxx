@@ -76,7 +76,7 @@
  *    I = ..   = 1+1 + 1+3	       =  6 elements
  *    S = ...  = 1+1 + 1+1 + 1+7       = 12 elements
  *
- *  Thus, if unanimity is to be belived, the standard word has 50 elements,
+ *  Thus, if unanimity is to be believed, the standard word has 50 elements,
  *  and the formula that I can't find in the Handbook is:
  *
  *	      WPM = (DPM*2)/50 = dpm/25, where DPM is dots per minute
@@ -163,7 +163,7 @@ static SDL_AudioSpec spec = {
  *  MMU segment causing the old segment to be completely abandoned, we
  *  *could* get a segfault.  There are several ways to solve this problem,
  *  (including mutexes or coallocated buffers), but neither seems worthwhile
- *  for the obfuscation that would ensue.  This isn't life support.
+ *  for the obfuscation that would ensue.  This aint't life support.
  */
 static bool fill_cb() {			
   if (void* newb =				// Attempt to resize buffer
@@ -209,7 +209,7 @@ static bool fill_cb() {
 bool set_cw(double wpm, double freq, double loudness) {
 
   /* Calculate and publish (in the local newspaper), the sample buffer
-   * length (in samples), the sine wave amplidtude, and the required
+   * length (in samples), the sine wave amplitude, and the required
    * speed (wpm).  If SDL has not been initialized, generate the sine
    * wave samples and dot length.  If the SDL has been initialized,
    * we'll let wavget() do that for us when the oscillator is silent.
@@ -239,7 +239,7 @@ bool set_cw(double wpm, double freq, double loudness) {
  *  specified by the integer.  Waveget() schlepps the data from the sine wave
  *  table (or zero) into the buffer upon request from the SDL.
  *
- *  After we've fed the beast, we see if the it is currently silent and
+ *  After we've fed the beast, we see if it is currently silent and
  *  make any frequency, speed or loudness changes while it sleeps.
  */
 void waveget(void*, Uint8* destination, int n) {

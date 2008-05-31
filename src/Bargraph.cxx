@@ -61,7 +61,6 @@ Bargraph::~Bargraph() { delete[] slider_labels; }
  *  use them to activate or deactivate letters (which, of course, we shouldn't
  *  be doing).
  */
-#include <cstdio>
 int Bargraph::handle(int e) {
   if (e == FL_RELEASE && 		// If event is a release, and
       Fl::event_y() >= y()+h()-20)	// it's in the Slider's label area),
@@ -147,7 +146,7 @@ void Bargraph::apply(void (Fl_Slider::*m)(),	// Isn't the syntax awful!!!
  *  and changes its appearance (to a washed out look).  Activate() does
  *  exactly the opposite.  NOTE:  Using FLTK's built-in widget activate/
  *  deactivate method does not seem to produce sufficient distinction
- *  between the two widget types.  Thus, we may have to resort to a whole
+ *  between the two widget states.  Thus, we may have to resort to a whole
  *  series of changes.  We don't want to go to the trouble of subclassing
  *  the Fl_Slider, so we'll seek them out one at a time rather than using
  *  apply() (which can call only a single, parameterless method).
