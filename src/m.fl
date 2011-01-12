@@ -231,7 +231,7 @@ Lesson->redraw();}
       }
     }
   }
-  code {w->show(argc, argv);
+  code {Morse->show(argc, argv);
 while (1) {
   int c = Lesson->select();	// Select random letter
   bool pass = Teacher->teach(c);// Teach/test student
