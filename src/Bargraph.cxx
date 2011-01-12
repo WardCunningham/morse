@@ -211,7 +211,8 @@ int Bargraph::select() {
     if (s->active() && s->visible()) 		//   Sum repertoire
       sum += s->value();		
   }
-  sum *= drand(); int result;			// Sum = random variable
+  sum *= drand();			// Sum = random variable
+  int result = 0;
   for (int i = 0; i < children(); i++) {	// Make second scan
     Fl_Slider* s = (Fl_Slider*) child(i);	//   For convenience
     if (s->active() && s->visible()) {		//   If selection candidate:
