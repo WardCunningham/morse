@@ -2,7 +2,7 @@
  * generated from the original HTML file by the script, help.py.
  */
 
-static char* HelpString =
+static const char* HelpString =
   "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n"
   "<html>\n"
   "<head>\n"
