@@ -29,10 +29,10 @@ m: m.fl Bargraph.cxx Bargraph.h Codebox.cxx Codebox.h Cw.cxx Cw.h \
 	g++ -c -Os `fltk-config --cxxflags` Bargraph.cxx	
 	g++ -c -Os `fltk-config --cxxflags` Codebox.cxx
 	g++ -c -Os `fltk-config --cxxflags` Knob.cxx
-	g++ -c -Os `sdl-config    --cflags` Cw.cxx
-	g++ -static -om m.o Bargraph.o Codebox.o Cw.o Knob.o \
-	  `sdl-config --static-libs` \
-	  `fltk-config --ldstaticflags` -ldl
+	g++ -c -Os `sdl-config --cflags` Cw.cxx
+	g++ -o m m.o Bargraph.o Codebox.o Cw.o Knob.o \
+	  `sdl-config --libs` \
+	  `fltk-config --ldflags` -ldl
 	strip m
 	rm *.o m.cxx m.h
 
