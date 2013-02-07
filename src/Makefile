@@ -1,16 +1,34 @@
 # "make" for MacOSX
 # To compile on MacOSX I used 10.6 with XCode dev tools and then
 # used MacPorts to install fltk 1.1.7 and libsdl 1.2.13 
+FLTK_LIBS=`fltk-config --ldstaticflags`
+SDL_LIBS=`sdl-config --static-libs`
+CC=g++
+CFLGAGS=
+# This may need to be changed for you. These are the X11 libraries used by
+# ftlk or sdl
+DYLIB=/opt/local/lib/libX11.6.dylib /opt/local/lib/libXext.6.dylib /opt/local/lib/libXrandr.2.dylib /opt/local/lib/libXrender.1.dylib /opt/local/lib/libxcb.1.dylib /opt/local/lib/libXau.6.dylib /opt/local/lib/libXdmcp.6.dylib
+
+
 Morse.app: Bargraph.o Codebox.o Cw.o Knob.o Help.h m.o Info.plist
 	mkdir -p Morse.app/Contents/MacOS
-	g++ -o Morse m.o Bargraph.o Codebox.o Cw.o Knob.o \
-	  `sdl-config --libs`  \
-	  `fltk-config --ldflags` -ldl \
+	mkdir    Morse.app/Contents/plugins
+	mkdir    Morse.app/Contents/Resources
+	cp $(DYLIB) Morse.app/Contents/plugins
+	$(CC) $(CFLAGS) -o Morse m.o Bargraph.o Codebox.o Cw.o Knob.o \
+	  $(FLTK_LIBS) \
+	  $(SDL_LIBS) \
 	  -framework Carbon
 	mv Morse Morse.app/Contents/MacOS/
-	fltk-config --post Morse.app/Contents/MacOS/Morse
-	cp Info.plist Morse.app/Contents/
-	rm *.o m.cxx m.h
+	cp Info.plist Morse.app/Contents/info.plist
+	for i in $(DYLIB); do \
+           cp $$i Morse.app/Contents/plugins/`basename $$i`; \
+           install_name_tool -id @executable_path/../plugins/`basename $$i` Morse.app/Contents/plugins/`basename $$i`; \
+           install_name_tool -change $$i @executable_path/../plugins/`basename $$i` Morse.app/Contents/MacOS/Morse; \
+           for j in $(DYLIB); do \
+                install_name_tool -change $$j @executable_path/../plugins/`basename $$j` Morse.app/Contents/plugins/`basename $$i`; \
+           done; \
+        done
 
 # For some reason, xmake is required to make m.tgz.
 m.tgz: m m.exe
