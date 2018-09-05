@@ -1,6 +1,6 @@
 # "make" for MacOSX
 # To compile on MacOSX I used 10.6 with XCode dev tools and then
-# used MacPorts to install fltk 1.1.7 and libsdl 1.2.13 
+# used MacPorts to install fltk 1.1.7 and libsdl 1.2.13
 FLTK_LIBS=`fltk-config --ldstaticflags`
 SDL_LIBS=`sdl-config --static-libs`
 CC=g++
@@ -34,13 +34,13 @@ Morse.app: Bargraph.o Codebox.o Cw.o Knob.o Help.h m.o Info.plist
 m.tgz: m m.exe
 	rm -f m.tgz
 	tar czvf m.tgz *
- 
+
 # Use "xmake" to generate m.exe
 m.exe: m.fl Bargraph.o Codebox.o Cw.cxx Cw.h Knob.cxx Knob.h Help.h m.o
 	g++ -c -Os  -I/usr/local/include/SDL Cw.cxx
 	g++ -om.exe m.o Bargraph.o Codebox.o Cw.o Knob.o \
 	  -static `fltk-config --ldstaticflags` \
-	  -lSDL -lmingw32 -lmingwex -lwinmm -lSDLmain	  
+	  -lSDL -lmingw32 -lmingwex -lwinmm -lSDLmain
 	strip m.exe
 	rm *.o m.cxx m.h
 
