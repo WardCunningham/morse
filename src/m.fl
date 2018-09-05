@@ -1,6 +1,6 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0105 
-header_name {.h} 
+version 1.0105
+header_name {.h}
 code_name {.cxx}
 decl {/*
     Copyright 1998-2004 Ward Cunningham and Jim Wilson
@@ -23,25 +23,25 @@ decl {/*
     along with Morse; if not, write to the Free Software Foundation, Inc.,
     59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */} {public
-} 
+}
 
-decl {\#include "Bargraph.h"} {} 
+decl {\#include "Bargraph.h"} {}
 
-decl {\#include "Codebox.h"} {} 
+decl {\#include "Codebox.h"} {}
 
 decl {\#include "Knob.h"} {public
-} 
+}
 
-decl {\#include "Cw.h"} {} 
+decl {\#include "Cw.h"} {}
 
-decl {\#include <cstdlib>} {} 
+decl {\#include <cstdlib>} {}
 
-decl {\#include "Help.h"} {} 
+decl {\#include "Help.h"} {}
 
 Function {adjust(Fl_Widget*, void*)} {private return_type void
 } {
   code {set_cw(Speed->value(), Tone->value(), 1.0);} {}
-} 
+}
 
 Function {full_screen(bool fs)} {private
 } {
@@ -52,7 +52,7 @@ if (fs) {
   W = Morse->w(); H = Morse->h();
   Morse->fullscreen();
 } else Morse->fullscreen_off(X,Y,W,H);} {}
-} 
+}
 
 Function {} {open
 } {
@@ -163,7 +163,7 @@ smaller->activate();}
       class Knob
     }
     Fl_Group Lesson {
-      label {Q7ZG098O1JPW.LRAM6B/XD=YCKN23?FU45VHSITE} open
+      label {Q7ZG098O1JPW.LRAM6B/XD=YCKN23?FU45$VHSITE} open
       private tooltip {Click the white box, below, to start.} xywh {0 25 640 185} box UP_BOX align 5 resizable
       code0 {o->disable("./=?");}
       code1 {o->activate("Q7ZG");}
@@ -199,7 +199,7 @@ Lesson->redraw();}
         }
         menuitem {} {
           label Symbols
-          callback {const char* syms = "./=?";
+          callback {const char* syms = "./=?$";
 if (o->mvalue()->value())
   Lesson->enable(syms);
 else
@@ -238,4 +238,4 @@ while (1) {
   Lesson->grade(c , pass);	// Update scores
   Lesson->graduate();		// Maybe add a letter
 }} {}
-} 
+}
