@@ -1,2 +1,4 @@
 Morse.app/
 *.pyc
+*.o
+*.cxx
