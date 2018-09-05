@@ -2,3 +2,4 @@ Morse.app/
 *.pyc
 *.o
 *.cxx
+m.h
