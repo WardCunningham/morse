@@ -1,5 +1,5 @@
 Morse.app/
 *.pyc
 *.o
-*.cxx
+m.cxx
 m.h
