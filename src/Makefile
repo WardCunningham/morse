@@ -46,9 +46,9 @@ m.exe: m.fl Bargraph.o Codebox.o Cw.cxx Cw.h Knob.cxx Knob.h Help.h m.o
 
 # Regular "make" is what you want for the Linux version
 m: m.fl Bargraph.o Codebox.o Cw.o Knob.o Help.h m.o
-	g++ -static -om m.o Bargraph.o Codebox.o Cw.o Knob.o \
-	  `sdl-config --static-libs` \
-	  `fltk-config --ldstaticflags` -ldl
+	g++ -om m.o Bargraph.o Codebox.o Cw.o Knob.o \
+	  `sdl-config --libs` \
+	  `fltk-config --ldflags` -ldl
 	strip m
 	rm *.o m.cxx m.h
 
