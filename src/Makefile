@@ -7,7 +7,7 @@ CC=g++
 CFLGAGS=
 # This may need to be changed for you. These are the X11 libraries used by
 # ftlk or sdl
-DYLIB=/opt/local/lib/libX11.6.dylib /opt/local/lib/libXext.6.dylib /opt/local/lib/libXrandr.2.dylib /opt/local/lib/libXrender.1.dylib /opt/local/lib/libxcb.1.dylib /opt/local/lib/libXau.6.dylib /opt/local/lib/libXdmcp.6.dylib
+DYLIB=/opt/X11/lib/libX11.6.dylib /opt/X11/lib/libXext.6.dylib /opt/X11/lib/libXrandr.2.dylib /opt/X11/lib/libXrender.1.dylib /opt/X11/lib/libxcb.1.dylib /opt/X11/lib/libXau.6.dylib /opt/X11/lib/libXdmcp.6.dylib
 
 
 Morse.app: Bargraph.o Codebox.o Cw.o Knob.o Help.h m.o Info.plist
@@ -75,3 +75,8 @@ cw.so: cw.pyx Cw.cxx Cw.h
 
 Help.h: m.htm
 	./help.py <m.htm >Help.h
+
+clean:
+	rm -rf ./Morse.app m.cxx m.h *.o
+
+.PHONY: clean
