@@ -119,7 +119,7 @@ int Codebox::handle(int event) {	// Called by FLTK when user twitches
  *  moved to the end of the line, and the character is inserted there.
  */
 void Codebox::append(int c) {		// Append character to displayed line
-  char s[] = { c, '\0' };		//   A 1-char string version of c.
+  char s[] = { (char) c, '\0' };		//   A 1-char string version of c.
   if (size() >= maximum_size())		//   If no room for character,
      cut(0,1);				//     discard one off left side
   position(maximum_size());		//   Return to right end of buffer

@@ -123,6 +123,9 @@ static int need;		// Nonzero to change freq/wpm/loudness
 static double amplitude;	//   New sinewave amplitude
 static double speed;		//   New speed (wpm)
 static double freq;		//   New (actual!) tone frequency (Hz)
+static int doramp=0;
+static int rampsize=20; // length of ramp up/down in samples
+static int dotsamplecnt=0;
 
 static union {	// Sinewave buffer (enough for one cycle)
   Uint8*  c;	//   As char*, (required by waveget)
@@ -186,6 +189,7 @@ static bool fill_cb() {
    * in cycles of the new frequency.
    */
   dot = int(round(1.2*freq/speed));	// Number of cycles in one code element
+  doramp=rampsize;      // start a ramp up immediately, at worst case we ramp up silence
   return true;
 }  
 
@@ -243,17 +247,47 @@ bool set_cw(double wpm, double freq, double loudness) {
  *  make any frequency, speed or loudness changes while it sleeps.
  */
 void waveget(void*, Uint8* destination, int n) {
+  Sint16* sdata=(Sint16*)data;
+  Sint16* sdataend=(Sint16*)dataend;
+  Sint16* sdestination=(Sint16*)destination;
+  Sint16 sample;
+  // SDL probably always ask for multiple of whole (16bit) sample
+  // so this loop processes 16bit samples now
+  n>>=1;        // yes. i calculate half kingdom by shifting teh bits
+  int rampdownpos=(sdataend-buffer.s)*dot-rampsize;
   while (n--) {				// Loop to copy waveform data:
-    *destination++ = shift&1? *data: 0;	//   Schlepp tone (or silence)
-    if (++data < dataend) continue;	//   Structured taboo! (much clearer!)
-    data = buffer.c; cycles++;		//   Buffer wrap? Reset, count cycle
+    sample = shift&1 ? *sdata : 0;
+    if (doramp>0) {
+        sample = sample*(rampsize-doramp)/rampsize;
+        doramp--;
+    } else if (doramp<0) {
+        sample = -sample*(doramp)/rampsize;
+        doramp++;
+    }
+    *sdestination++ = sample;       //   Schlepp tone (or silence)
+    if (dotsamplecnt==rampdownpos) {
+        if ((shift&1) && !(shift&2)) {
+            // start ramp down here
+            doramp=-rampsize;
+        }
+    }
+    dotsamplecnt++;
+    if (++sdata < sdataend) continue;	//   Structured taboo! (much clearer!)
+    sdata = buffer.s; cycles++;		//   Buffer wrap? Reset, count cycle
     Morse|shift? (idle = 0): idle++;	//   Pending stuff => not idle
     if (cycles < dot)     continue;	//   See what I mean? We're whittling!
+    dotsamplecnt=0;
+    unsigned prevshift=shift;
     cycles = 0; shift >>= 1;		//   If element done, get next one.
+    if (!(prevshift&1) && (((shift>1) && (shift&1)) || ((shift<=1) && (Morse&1)))) {
+        // start ramp up here
+        doramp=rampsize;
+    }
     if (shift > 1)        continue;	//   More character? whittle rest.
     shift = Morse;			//   Exhausted this? Get next
     if (Morse != 5) Morse = 0;		//   Not didididi... make way for more
   }
+  data=(Uint8*)sdata;
   if (need && !(shift&1)) fill_cb();	// If silent, make change now.
 }
 
