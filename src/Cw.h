@@ -25,8 +25,8 @@ extern "C" {	// This lets Pyrex find our functions
 /***	Cw.h - promises made to cw.cxx clients
  *
  *  Cw.cxx exposes three functions.
- * 
- *  The first function, set_cw() is used to initialize the sound system, 
+ *
+ *  The first function, set_cw() is used to initialize the sound system,
  *  the character codespeed, sinewave frequency and loudness.
  *
  *  The second function accepts an ASCII or Unicode character (negated
@@ -38,10 +38,10 @@ extern "C" {	// This lets Pyrex find our functions
  *  swallowed up the last audible peep.  If this value is zero, code
  *  is being sent.
  */
-bool set_cw(double WPM = 20, 		// Words/minute (default 20)
-	    double freq = 1000, 	// Note (default 1Khz)
+bool set_cw(double WPM = 22, 		// Words/minute (default 20)
+	    double freq = 800, 	// Note (default 1Khz)
 	    double loudness = 1.0);	// Loudness (default Maximum)
-	    
+
 bool send_cw(int ASCII);		// Send character in Morse Code
 double idle_cw();			// Seconds we've not been sending
 

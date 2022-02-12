@@ -8,7 +8,7 @@ SDL2_FLAGS=`sdl2-config --cflags`
 ######################################################
 # MacOSX
 # To compile on MacOSX I used 10.6 with XCode dev tools and then
-# used MacPorts to install fltk 1.1.7 and libsdl 1.2.13 
+# used MacPorts to install fltk 1.1.7 and libsdl 1.2.13
 CC=g++
 CFLGAGS=
 # This may need to be changed for you. These are the X11 libraries used by
@@ -16,6 +16,7 @@ CFLGAGS=
 DYLIB=/opt/X11/lib/libX11.6.dylib /opt/X11/lib/libXext.6.dylib /opt/X11/lib/libXrandr.2.dylib /opt/X11/lib/libXrender.1.dylib /opt/X11/lib/libxcb.1.dylib /opt/X11/lib/libXau.6.dylib /opt/X11/lib/libXdmcp.6.dylib
 
 Morse.app: Bargraph.o Codebox.o Cw.o Knob.o Help.h m.o Info.plist
+	rm -rf Morse.app
 	mkdir -p Morse.app/Contents/MacOS
 	mkdir    Morse.app/Contents/plugins
 	mkdir    Morse.app/Contents/Resources
@@ -36,15 +37,13 @@ Morse.app: Bargraph.o Codebox.o Cw.o Knob.o Help.h m.o Info.plist
         done
 ######################################################
 
-######################################################
-# Windows
 # Use "xmake" to generate m.exe
 m.exe: m.fl Bargraph.o Codebox.o Cw.cxx Cw.h Knob.cxx Knob.h Help.h m.o
 	g++ -c -Os  -I/usr/local/include/SDL Cw.cxx
 	g++ -om.exe m.o Bargraph.o Codebox.o Cw.o Knob.o \
 	  $(FLTK_LIBS) \
 	  $(SDL2_LIBS) \
-	  -lmingw32 -lmingwex -lwinmm
+	  -lSDL -lmingw32 -lmingwex -lwinmm -lSDLmain
 	strip m.exe
 	rm *.o m.cxx m.h
 ######################################################
